@@ -18,7 +18,10 @@ def retrieve_xml(itemid, system, *args):
         urls = "http://api.eve-central.com/api/marketstat?typeid={}&usesystem={}".format(itemid, systems.get(system))
     
     for url in urls:
-        url_open = urlopen(url)
+        if type(urls) is not list:
+            url_open = urlopen(urls)
+        else:
+            url_open = urlopen(url)
         _xml_data = []
         for line in url_open:
             _xml_data.append(line)
@@ -35,11 +38,11 @@ def parse_system_prices(xml_tree, xpath):
         for path in xpath:
             xpath1 = root.find(xpath[0][0]).find(xpath[0][1]).text
             xpath2 = root.find(xpath[1][0]).find(xpath[1][1]).text
-            return (xpath1, xpath2)
+            return (float(xpath1), float(xpath2))
 
-if __name__ == "__main__":
-    xml_data = retrieve_xml(34, ["Jita", "Rens"])
+def item_price(itemid, system):
+    xml_data = retrieve_xml(itemid, system)
     for element in xml_data:
         ele = ElementTree(fromstring(element))
         prices = parse_system_prices(ele, [("buy", "max"), ("sell", "min")])
-        print prices
+        return prices

@@ -2,12 +2,15 @@ from xml.etree.ElementTree import ElementTree, fromstring
 from urllib2 import urlopen
 import os
 
-ip = os.getenv('IP', '0.0.0.0')
-port = int(os.getenv('PORT', 8080))
+def retrieve_xml(itemid, system):
+    """
+    Main driving function of the project. Retrieves the XML (to be parsed) for
+    itemid, which can be located on eve-central; and the system (currently 
+    restrained to the four main trading hubs).
+    """
 
-def retrieve_xml(itemid, system, *args):
-    systems = {"Jita": 30000142, "Rens": 30002510,
-                   "Dodixie": 30002659, "Amarr": 30002187}
+    systems = {"Jita": 30000142, "Rens": 30002510, "Dodixie": 30002659, 
+               "Amarr": 30002187}
     xml_data = []
     url_data = []
     if type(system) is list:
@@ -30,6 +33,10 @@ def retrieve_xml(itemid, system, *args):
     return xml_data
 
 def parse_system_prices(xml_tree, xpath):
+    """
+    Self explanatory: xml_tree, however, is the xml data returned from
+    retrieve_xml() and the xpath is the xpath.
+    """
     if type(xml_tree) is list:
         return "Nil"
     else:
@@ -41,6 +48,12 @@ def parse_system_prices(xml_tree, xpath):
             return (float(xpath1), float(xpath2))
 
 def item_price(itemid, system):
+    """
+    The function to be called!
+    
+    itemid is the item id from eve-central.
+    system is the system, again restrained to the four main trading hubs.
+    """
     xml_data = retrieve_xml(itemid, system)
     for element in xml_data:
         ele = ElementTree(fromstring(element))

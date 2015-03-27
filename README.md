@@ -1,4 +1,10 @@
-EveMarketAnalysis
+Eve Commodity Price Lookup
 =================
 
-A market analysis tool for the eve market using eve-central api.
+An implementation of the Eve Central API (in Python) used to fetch commodity 
+prices. At the current stage of development, it retrieves prices from mostly the 
+four main trading hubs.
+
+TODO:
+
+1.) Add additional system price lookups

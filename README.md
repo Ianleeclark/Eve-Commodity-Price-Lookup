@@ -8,4 +8,3 @@ four main trading hubs.
 TODO:
 
 1.) Add additional system price lookups
-2.) Ensure that CostAnalysis.py retrieves correct shipping cost information (using RF Freighting)

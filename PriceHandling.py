@@ -1,6 +1,5 @@
 from xml.etree.ElementTree import ElementTree, fromstring
 from urllib2 import urlopen
-import os
 
 def retrieve_xml(itemid, system):
     """
@@ -8,17 +7,21 @@ def retrieve_xml(itemid, system):
     itemid, which can be located on eve-central; and the system (currently 
     restrained to the four main trading hubs).
     """
-
+    
+    ec_url = "http://api.eve-central.com/api/marketstat?typeid=".format(itemid))
+    
     systems = {"Jita": 30000142, "Rens": 30002510, "Dodixie": 30002659, 
                "Amarr": 30002187}
     xml_data = []
     url_data = []
+        
     if type(system) is list:
         urls = []
         for key in system:
-            urls.append("http://api.eve-central.com/api/marketstat?typeid={}&usesystem={}".format(itemid, systems.get(key)))
+            ec_url += "typeid={}&usesystem={}".format(systems.get(key)))
+            urls.append(ec_url)
     else:
-        urls = "http://api.eve-central.com/api/marketstat?typeid={}&usesystem={}".format(itemid, systems.get(system))
+        urls = ec_url + "&usesystem={}".format(systems.get(system))
     
     for url in urls:
         if type(urls) is not list:

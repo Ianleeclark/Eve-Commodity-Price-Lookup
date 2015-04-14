@@ -1,7 +1,36 @@
 import requests
 import xml.etree.cElementTree as ET
 
-
+class Standings(dict):
+    """
+    A subclass of the dict data type used to properly retrieve standings.
+    I chose to create this subclass because I wanted to be able to pass 
+    an argument to a dictionary that wasn't inherently a key, but cuold still be
+    easily found. NEEDS TO BE TESTED
+    """
+    def __init__(self, *args):
+        dict.__init__(self, args)
+        
+    def __getitem__(self, (key, val)):
+        # Please note:
+        #   The second argument is a tuple, so we do lookups like so x[1,2]
+        try:
+            self.
+        except KeyError:
+            self.key_lookup(key, val)
+                
+    def __setitem__(self, key, val):
+        dict.__setitem(self, key, val)
+            
+    def key_lookup(self, key, i):
+        common_values = {   'Jita': ['1000035', '500001'],
+                            'Amarr': ['1000086', '0']}
+        try:
+            return common_values[key][i]
+        except KeyError:
+            return None
+        
+        
 class PlayerStats(dict):
     """
     Class operating as a container for player statistics, such as: corporation

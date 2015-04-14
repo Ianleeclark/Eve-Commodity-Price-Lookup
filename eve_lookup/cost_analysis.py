@@ -1,6 +1,6 @@
-from PriceHandling import item_price
+from price_handling import item_price
 from math import e as e_const
-import PlayerStats
+import player_stats
 
 def shipping_cost(shipping):
     origin, destination = shipping[0], shipping[1]

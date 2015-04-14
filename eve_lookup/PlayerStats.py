@@ -2,7 +2,7 @@ import requests
 import xml.etree.cElementTree as ET
 
 
-class PlayerStats:
+class PlayerStats(dict):
     """
     Class operating as a container for player statistics, such as: corporation
     standing, accounting skill level, &c.
@@ -10,7 +10,7 @@ class PlayerStats:
     def __init__(self, keyid, vCode):
         self.key_id = keyid
         self.vCode = vCode
-        self.corp_stand, self.fact_stand = self.player_standings_lookup()
+        self.standings = self.player_standings_lookup()
         self.acctng, self.relations = self.player_skill_lookup()
 
     def player_skill_lookup(self):
@@ -25,13 +25,12 @@ class PlayerStats:
             r = requests.get(url)
             root = ET.fromstring(r.text)
             x = root.findall('result/rowset[@name="skills"]/row[@typeID="3446"]')
-            results.append(x[0].attrib['level'])
+            results.append(int(x[0].attrib['level']))
 
         return results[0], results[1]
 
     def player_standings_lookup(self):
-        corp_standings = {}
-        fact_standings = {}
+        standings = {}
 
         url_base = "https://api.eveonline.com/"
         stand_param = "char/Standings.xml.aspx?keyID={}" \
@@ -44,10 +43,18 @@ class PlayerStats:
         y = root.findall('result/characterNPCStandings/rowset[@name="factions"]/row')
         
         for i in xrange(len(x)):
-            corp_standings[x[i].attrib['fromID']] = x[i].attrib['standing']
-            fact_standings[y[i].attrib['fromID']] = y[i].attrib['standing']
-        
-        return corp_standings, fact_standings
+            standings[x[i].attrib['fromID']] = float(x[i].attrib['standing'])
+            standings[y[i].attrib['fromID']] = float(y[i].attrib['standing'])
+
+        return standings
+
+    def key_lookup(self, key, i):
+        common_values = {'Jita': ['1000035', '500001'],
+                         'Amarr': ['1000086', '0']}
+        try:
+            return common_values[key][i]
+        except KeyError:
+            return None
 
 if __name__ == "__main__":
     a = PlayerStats(111, "1111")

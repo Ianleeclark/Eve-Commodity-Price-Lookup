@@ -35,9 +35,3 @@ def total_cost(buy_price, shipping, player_stats=None):
 def calculate_profit(price, shipping, player_stats):
     cost = total_cost(price, shipping, player_stats)
     return price - cost
-    
-if __name__ == "__main__":
-    shipping = ['Jita', 'Amarr']
-    player_stats = PlayerStats.PlayerStats(1, "1111" )
-    price = item_price(17736, ["Jita", "Amarr"])
-    print calculate_profit(price, shipping, player_stats)

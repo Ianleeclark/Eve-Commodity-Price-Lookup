@@ -84,7 +84,3 @@ class PlayerStats(dict):
             return common_values[key][i]
         except KeyError:
             return None
-
-if __name__ == "__main__":
-    a = PlayerStats(111, "1111")
-    print a.fact_stand
